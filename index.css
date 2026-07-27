@@ -444,3 +444,105 @@ main {
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
+}
+
+/* Subtle radial glows on the back */
+.id-back::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 50%, rgba(124, 58, 237, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 50%, rgba(6, 182, 212, 0.12) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* Magnetic stripe bar at top */
+.id-stripe {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 36px;
+  background: linear-gradient(135deg, #1a0040, #0a0020);
+  border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+/* Back content (sits above the stripe) */
+.id-back-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-top: 10px; /* clear of stripe */
+}
+
+.id-back-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: rgba(167, 139, 250, 0.6);
+  text-transform: uppercase;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* QR Code container */
+.id-qr-box {
+  background: #fff;
+  border-radius: 8px;
+  padding: 7px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.id-qr-box canvas,
+.id-qr-box img {
+  display: block;
+  border-radius: 2px;
+}
+
+.id-back-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem; font-weight: 600;
+  color: rgba(241, 245, 249, 0.65);
+}
+
+.id-back-url {
+  font-size: 0.56rem;
+  color: rgba(167, 139, 250, 0.38);
+  letter-spacing: 0.08em;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* ── Footer ──────────────────────────────────── */
+footer {
+  margin-top: 4rem;
+  text-align: center;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+footer p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex; align-items: center;
+  justify-content: center; gap: 0.4rem;
+  flex-wrap: wrap;
+}
+footer a { color: var(--primary-light); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+  .header-badge { display: none; }
+  main { padding: 2.5rem 1rem 3rem; }
+  :root { --card-w: 300px; --card-h: 190px; }
+  .id-avatar { width: 58px; height: 58px; font-size: 1.2rem; }
+  .id-front-header { height: 46px; }
+  .id-member-name { font-size: 0.95rem; }
+}
+
+@media (max-width: 380px) {
+  :root { --card-w: 280px; --card-h: 177px; }
+  .id-avatar { width: 52px; height: 52px; font-size: 1.1rem; }
+}
