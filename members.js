@@ -22,18 +22,18 @@
 
 const MEMBERS = [
   {
-    id: "priya-sharma",
-    name: "Priya Sharma",
+    id: "krushna-pawar",
+    name: "Krushna Pawar",
     designation: "President",
-    initials: "PS",
+    initials: "KP",
     avatarColor: "#7c3aed",
     bio: "Driving MathX to new heights with a passion for pure mathematics 🎯",
-    instagram: "priyasharma_math",
-    linkedin: "priya-sharma-mathx",
-    github: "priyasharma",
-    email: "priya@mathx.club",
-    twitter: "priya_mathx",
-    whatsapp: "+919876543210"
+    instagram: "https://www.instagram.com/krushn._.pawar?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+    linkedin: "",
+    github: "",
+    email: "",
+    twitter: "",
+    whatsapp: ""
   },
   {
     id: "arjun-mehta",
