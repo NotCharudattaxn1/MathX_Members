@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MathX — Member ID Cards</title>
+  <meta name="description" content="MathX Club official member ID cards. Click any card to flip it and scan the QR code to view a member's full profile." />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="logo-group">
+        <div class="logo-icon">∑</div>
+        <div class="logo-text">
+          <span class="logo-name">MathX</span>
+          <span class="logo-sub">Member ID Cards</span>
+        </div>
+      </div>
+      <div class="header-badge">
+        <i class="fa-solid fa-id-card"></i>&nbsp; Official Credentials
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+    <div class="hero">
+      <h1 class="hero-title">Club <span class="gradient-text">ID Cards</span></h1>
+      <p class="hero-sub">
+        Each member carries an official MathX ID card.<br />
+        <span class="flip-tip"><i class="fa-solid fa-rotate"></i> Click any card to flip it and scan the QR code</span>
+      </p>
+    </div>
+
+    <!-- Cards injected by app.js -->
+    <div class="cards-grid" id="cardsGrid"></div>
+
+    <footer>
+      <p>
+        <i class="fa-solid fa-circle-info"></i>
+        QR codes link to member profile pages. Host on
+        <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a> or
+        <a href="https://netlify.com" target="_blank" rel="noopener">Netlify</a>
+        for QR codes to work when scanned on all devices.
+      </p>
+    </footer>
+  </main>
+
+  <script src="members.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
