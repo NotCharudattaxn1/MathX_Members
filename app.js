@@ -35,40 +35,72 @@ function formatMemberId(index) {
   return `MX-${String(index + 1).padStart(3, '0')}`;
 }
 
-// Helper to clean up handles and convert them to valid URLs
+// Helper to extract a clean username/handle from a full URL or path string
+function extractHandle(value, domainKeyword) {
+  if (!value.includes(domainKeyword)) {
+    return value;
+  }
+  let urlString = value;
+  if (!/^https?:\/\//i.test(urlString)) {
+    urlString = 'https://' + urlString;
+  }
+  try {
+    const url = new URL(urlString);
+    let path = url.pathname.replace(/^\/+|\/+$/g, ''); // strip leading/trailing slashes
+    
+    if (domainKeyword === 'linkedin.com') {
+      if (path.startsWith('in/')) {
+        path = path.substring(3);
+      }
+    }
+    
+    // Split by slash and return the first segment as username (ignoring sub-directories or sub-pages)
+    const parts = path.split('/');
+    return parts[0] || '';
+  } catch (e) {
+    return value;
+  }
+}
+
+// Helper to clean up handles/URLs and convert them to valid standard absolute URLs
 function formatSocialUrl(type, value) {
   if (!value) return null;
   value = value.trim();
-  
-  // If it's already a full URL, return it as-is (ensuring protocol is set)
-  if (value.startsWith('http://') || value.startsWith('https://')) {
-    return value;
-  }
   
   // If the user included an @ (e.g. "@username"), strip it
   if (value.startsWith('@')) {
     value = value.substring(1);
   }
   
+  let handle = value;
+  
   switch (type) {
     case 'instagram':
-      if (value.includes('instagram.com/')) return `https://${value.replace(/^(https?:\/\/)?(www\.)?/, '')}`;
-      return `https://instagram.com/${value}`;
+      handle = extractHandle(value, 'instagram.com');
+      return handle ? `https://instagram.com/${handle}` : null;
     case 'linkedin':
-      if (value.includes('linkedin.com/')) return `https://${value.replace(/^(https?:\/\/)?(www\.)?/, '')}`;
-      return `https://linkedin.com/in/${value}`;
+      handle = extractHandle(value, 'linkedin.com');
+      return handle ? `https://linkedin.com/in/${handle}` : null;
     case 'github':
-      if (value.includes('github.com/')) return `https://${value.replace(/^(https?:\/\/)?(www\.)?/, '')}`;
-      return `https://github.com/${value}`;
+      handle = extractHandle(value, 'github.com');
+      return handle ? `https://github.com/${handle}` : null;
     case 'twitter':
-      if (value.includes('twitter.com/') || value.includes('x.com/')) return `https://${value.replace(/^(https?:\/\/)?(www\.)?/, '')}`;
-      return `https://twitter.com/${value}`;
+      if (value.includes('twitter.com')) {
+        handle = extractHandle(value, 'twitter.com');
+      } else if (value.includes('x.com')) {
+        handle = extractHandle(value, 'x.com');
+      }
+      return handle ? `https://x.com/${handle}` : null;
     case 'whatsapp':
-      // Keep only digits for WhatsApp phone api
-      const cleanPhone = value.replace(/\D/g, '');
-      return `https://wa.me/${cleanPhone}`;
+      let waValue = value;
+      if (waValue.includes('wa.me')) {
+        waValue = extractHandle(waValue, 'wa.me');
+      }
+      const cleanPhone = waValue.replace(/\D/g, '');
+      return cleanPhone ? `https://wa.me/${cleanPhone}` : null;
     case 'email':
-      return `mailto:${value}`;
+      const cleanEmail = value.replace(/^mailto:/i, '');
+      return cleanEmail ? `mailto:${cleanEmail}` : null;
     default:
       return value;
   }
