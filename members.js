@@ -28,7 +28,7 @@ const MEMBERS = [
     initials: "KP",
     avatarColor: "#7c3aed",
     bio: "Driving MathX to new heights with a passion for pure mathematics 🎯",
-    instagram: "https://www.instagram.com/krushn._.pawar?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+    instagram: "https://www.instagram.com/krushn._.pawar?igsh=dHN3MmE2b2d4aDZk",
     linkedin: "",
     github: "",
     email: "",
