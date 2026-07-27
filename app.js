@@ -35,33 +35,70 @@ function formatMemberId(index) {
   return `MX-${String(index + 1).padStart(3, '0')}`;
 }
 
-// ─── Social Link Builder ──────────────────────────────────────────────────────
+// Helper to clean up handles and convert them to valid URLs
+function formatSocialUrl(type, value) {
+  if (!value) return null;
+  value = value.trim();
+  
+  // If it's already a full URL, return it as-is (ensuring protocol is set)
+  if (value.startsWith('http://') || value.startsWith('https://')) {
+    return value;
+  }
+  
+  // If the user included an @ (e.g. "@username"), strip it
+  if (value.startsWith('@')) {
+    value = value.substring(1);
+  }
+  
+  switch (type) {
+    case 'instagram':
+      if (value.includes('instagram.com/')) return `https://${value.replace(/^(https?:\/\/)?(www\.)?/, '')}`;
+      return `https://instagram.com/${value}`;
+    case 'linkedin':
+      if (value.includes('linkedin.com/')) return `https://${value.replace(/^(https?:\/\/)?(www\.)?/, '')}`;
+      return `https://linkedin.com/in/${value}`;
+    case 'github':
+      if (value.includes('github.com/')) return `https://${value.replace(/^(https?:\/\/)?(www\.)?/, '')}`;
+      return `https://github.com/${value}`;
+    case 'twitter':
+      if (value.includes('twitter.com/') || value.includes('x.com/')) return `https://${value.replace(/^(https?:\/\/)?(www\.)?/, '')}`;
+      return `https://twitter.com/${value}`;
+    case 'whatsapp':
+      // Keep only digits for WhatsApp phone api
+      const cleanPhone = value.replace(/\D/g, '');
+      return `https://wa.me/${cleanPhone}`;
+    case 'email':
+      return `mailto:${value}`;
+    default:
+      return value;
+  }
+}
 
 function buildSocialLinks(member) {
   const links = [
     {
       cls: 'social-instagram', icon: 'fa-brands fa-instagram', label: 'Instagram',
-      url: member.instagram ? `https://instagram.com/${member.instagram}` : null,
+      url: formatSocialUrl('instagram', member.instagram),
     },
     {
       cls: 'social-linkedin', icon: 'fa-brands fa-linkedin-in', label: 'LinkedIn',
-      url: member.linkedin ? `https://linkedin.com/in/${member.linkedin}` : null,
+      url: formatSocialUrl('linkedin', member.linkedin),
     },
     {
       cls: 'social-github', icon: 'fa-brands fa-github', label: 'GitHub',
-      url: member.github ? `https://github.com/${member.github}` : null,
+      url: formatSocialUrl('github', member.github),
     },
     {
       cls: 'social-twitter', icon: 'fa-brands fa-x-twitter', label: 'Twitter/X',
-      url: member.twitter ? `https://twitter.com/${member.twitter}` : null,
+      url: formatSocialUrl('twitter', member.twitter),
     },
     {
       cls: 'social-whatsapp', icon: 'fa-brands fa-whatsapp', label: 'WhatsApp',
-      url: member.whatsapp ? `https://wa.me/${member.whatsapp.replace(/\D/g, '')}` : null,
+      url: formatSocialUrl('whatsapp', member.whatsapp),
     },
     {
       cls: 'social-email', icon: 'fa-solid fa-envelope', label: 'Email',
-      url: member.email ? `mailto:${member.email}` : null,
+      url: formatSocialUrl('email', member.email),
     },
   ];
   return links.filter(l => l.url);
@@ -74,10 +111,10 @@ function renderDirectory() {
   if (!grid) return;
 
   MEMBERS.forEach((member, index) => {
-    const profileUrl    = getProfileUrl(member.id);
-    const memberId      = formatMemberId(index);
-    const avatarGrad    = `linear-gradient(135deg, ${member.avatarColor}, ${darkenHex(member.avatarColor, 55)})`;
-    const dotColor      = member.avatarColor;
+    const profileUrl = getProfileUrl(member.id);
+    const memberId = formatMemberId(index);
+    const avatarGrad = `linear-gradient(135deg, ${member.avatarColor}, ${darkenHex(member.avatarColor, 55)})`;
+    const dotColor = member.avatarColor;
 
     // ── Outer flip wrapper ──
     const wrap = document.createElement('div');
@@ -149,12 +186,12 @@ function renderDirectory() {
       const qrEl = document.getElementById(`qr-${member.id}`);
       if (!qrEl) return;
       new QRCode(qrEl, {
-        text:          profileUrl,
-        width:         112,
-        height:        112,
-        colorDark:     '#180840',
-        colorLight:    '#ffffff',
-        correctLevel:  QRCode.CorrectLevel.H,
+        text: profileUrl,
+        width: 112,
+        height: 112,
+        colorDark: '#180840',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H,
       });
     }, 0);
   });
@@ -166,9 +203,9 @@ function renderProfile() {
   const container = document.getElementById('profileContainer');
   if (!container) return;
 
-  const params   = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(window.location.search);
   const memberId = params.get('id');
-  const member   = MEMBERS.find(m => m.id === memberId);
+  const member = MEMBERS.find(m => m.id === memberId);
 
   // ── Not Found ──
   if (!member) {
@@ -188,7 +225,7 @@ function renderProfile() {
   }
 
   // ── Build Social Buttons ──
-  const socials    = buildSocialLinks(member);
+  const socials = buildSocialLinks(member);
   const socialHTML = socials.map(s => `
     <a href="${s.url}" target="_blank" rel="noopener noreferrer"
        class="social-btn ${s.cls}" aria-label="${s.label}">

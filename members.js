@@ -9,7 +9,9 @@
 //    initials     → 2–3 letters shown in avatar (if no photo)
 //    avatarColor  → hex color for the avatar gradient
 //    bio          → short tagline / description
-//    instagram    → Instagram handle (without @)
+//    instagram    → Instagram handle only (without @ and without the URL)
+//                   e.g.  "priyasharma_math"  ✅
+//                   NOT   "https://instagram.com/priyasharma_math"  ❌
 //    linkedin     → LinkedIn profile slug (the part after /in/)
 //    github       → GitHub username
 //    email        → email address
